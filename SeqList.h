@@ -38,6 +38,7 @@ typedef struct SeqList
 }SL;
 
 void SeqListPrintf(SL* ps);//打印函数
+void SeqListCheckCapacity(SL* ps);//检查容量
 
 //函数声明，在数据结构里又称为  接口函数
 void SeqListInit(SL* ps);//初始化

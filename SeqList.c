@@ -2,7 +2,6 @@
 #include "SeqList.h"
 
 //打印函数
-
 void SeqListPrintf(SL* ps)
 {
 	for (int i = 0; i < ps->size; i++)
@@ -12,20 +11,8 @@ void SeqListPrintf(SL* ps)
 	printf("\n");
 }
 
-void SeqListInit(SL* ps)
-{
-	ps->arr = NULL;
-	ps->size = ps->capacity = 0;
-}
-
-void SeqListDestory(SL* ps)
-{
-	free(ps->arr);
-	ps->arr = NULL;
-	ps->size = ps->capacity = 0;
-}
-
-void SeqListPushBack(SL* ps, SLDatatype x)//末尾插入
+//检查容量
+void SeqListCheckCapacity(SL* ps)
 {
 	//插入数据，前提是需要有足够的容量，判定有无空间或空间不足。
 	if (ps->size == ps->capacity)
@@ -43,6 +30,24 @@ void SeqListPushBack(SL* ps, SLDatatype x)//末尾插入
 		ps->arr = tmp;
 		ps->capacity = newcapacity;
 	}
+}
+
+void SeqListInit(SL* ps)
+{
+	ps->arr = NULL;
+	ps->size = ps->capacity = 0;
+}
+
+void SeqListDestory(SL* ps)
+{
+	free(ps->arr);
+	ps->arr = NULL;
+	ps->size = ps->capacity = 0;
+}
+
+void SeqListPushBack(SL* ps, SLDatatype x)//末尾插入
+{
+	SeqListCheckCapacity(ps);
 	ps->arr[ps->size] = x;
 	ps->size++;
 }
@@ -61,5 +66,17 @@ void SeqListPopBack(SL* ps)//末尾删除
 		printf("尾删失败。元素个数不足。\n");
 }
 
-void SeqListPushFront(SL* ps, SLDatatype x);//开头插入
+void SeqListPushFront(SL* ps, SLDatatype x)//开头插入
+{
+	SeqListCheckCapacity(ps);
+	//存在一个问题，如果元素个数和数据表容量相同，挪动数据会造成非法访问。所以在挪动之前需要检查或者扩容。
+	int end = ps->size - 1;
+	while (end >= 0)
+	{
+		ps->arr[end + 1] = ps->arr[end];
+		end--;
+	}//挪动后放入数据。
+	ps->arr[0] = x;
+	ps->size++;
+}
 void SeqListPopFront(SL* ps);//开头删除
