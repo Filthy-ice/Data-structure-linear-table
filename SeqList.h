@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <assert.h>
 
 #define N 1000
 
@@ -37,6 +38,19 @@ typedef struct SeqList
 	int capacity;//可以存储数据的个数
 }SL;
 
+enum
+{
+	Exit,
+	PushFront,
+	PopFront,
+	PushBack,
+	PopBack,
+	Insert,
+	Erase,
+	Find
+};
+
+int SeqListFind(SL* ps, SLDatatype x);//查找元素函数
 void SeqListPrintf(SL* ps);//打印函数
 void SeqListCheckCapacity(SL* ps);//检查容量
 
@@ -48,4 +62,6 @@ void SeqListPushBack(SL* ps, SLDatatype x);//末尾插入
 void SeqListPopBack(SL* ps);//末尾删除
 void SeqListPushFront(SL* ps, SLDatatype x);//开头插入
 void SeqListPopFront(SL* ps);//开头删除
+void SeqListInsert(SL* ps, int pos, SLDatatype x);//指定位置插入
+void SeqListErase(SL* ps, int pos);//指定位置删除
 //....

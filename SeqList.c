@@ -79,4 +79,70 @@ void SeqListPushFront(SL* ps, SLDatatype x)//开头插入
 	ps->arr[0] = x;
 	ps->size++;
 }
-void SeqListPopFront(SL* ps);//开头删除
+void SeqListPopFront(SL* ps)//开头删除
+{
+	//和头插一样，需要考虑非法访问问题。如果没有元素，那么删除将毫无意义。
+	assert(ps->size > 0);
+	int begin = 1;//不会从下标为0的往前挪动，不然越界。
+	while (begin < ps->size)
+	{
+		ps->arr[begin - 1] = ps->arr[begin];//向前挪动
+		begin++;
+	}
+	//挪动完成后，元素数量减少
+	ps->size--;
+}
+int SeqListFind(SL* ps, SLDatatype x)//查找元素函数  找到返回下标，没找到返回-1
+{
+	//首先还是得考虑是否合法的问题。不然查找毫无意义。
+	assert(ps->size > 0);
+	for (int i = 0; i < ps->size; i++)
+	{
+		if (ps->arr[i] == x)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+void SeqListInsert(SL* ps, int pos, SLDatatype x)//指定位置插入
+{
+	//先判定pos指定下标的合理性。
+	assert(pos >= 0);
+	assert(pos < ps->size);
+	//首先判定插入的位置是否存在，或者说元素个数和元素容量是否允许插入
+	if (ps->capacity == 0)//没有容量
+	{
+		printf("插入失败，数据表没有容量。\n");
+		exit(-1);
+	}
+	else if (ps->size == ps->capacity != 0)//容量不足
+	{
+		SeqListCheckCapacity(ps);//开辟空间
+	}
+	int end = ps->size - 1;
+	while (end >= pos)
+	{
+		ps->arr[end + 1] = ps->arr[end];
+		end--;
+	}
+	ps->arr[pos] = x;
+	ps->size++;
+}
+
+void SeqListErase(SL* ps, int pos)//指定位置删除
+{
+	assert(ps->size > 0);
+	assert(pos >= 0);
+	assert(pos <= ps->size);
+	if (pos != ps->size-1)
+	{
+		while (pos <= ps->size - 2)
+		{
+			ps->arr[pos] = ps->arr[pos + 1];
+			pos++;
+		}
+	}
+	ps->size--;
+}
